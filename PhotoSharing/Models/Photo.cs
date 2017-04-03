@@ -22,12 +22,15 @@ namespace PhotoSharing.Models
         [HiddenInput(DisplayValue = false)]
         public string ImageMimeType { get; set; }
 
+        [DataType(DataType.MultilineText)]
+        public string Description { get; set; }
+
         [DataType(DataType.DateTime)]
         [DisplayName("Created Date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/YY}", ApplyFormatInEditMode = true)]
-        public string Description { get; set; }
+        public DateTime CreatedDate { get; set; }
 
-        public int UserName { get; set; }
+        public string UserName { get; set; }
 
         public virtual ICollection<Comment> Comments { get; set; }
 
