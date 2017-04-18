@@ -15,9 +15,6 @@
             @Html.DisplayNameFor(model => model.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PhotoFile)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.ImageMimeType)
         </th>
         <th>
@@ -38,9 +35,6 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.PhotoFile)
-        </td>
-        <td>
             @Html.DisplayFor(modelItem => item.ImageMimeType)
         </td>
         <td>
@@ -54,7 +48,7 @@
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.PhotoID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.PhotoID }) |
+            @Html.ActionLink("Display", "Display", new { id=item.PhotoID }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.PhotoID })
         </td>
     </tr>

@@ -1,7 +1,7 @@
 ﻿@model PhotoSharing.Models.Photo
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Display";
 }
 
 <h2>Details</h2>
@@ -23,7 +23,10 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PhotoFile)
+            @if (Model.PhotoFile != null)
+            {
+                <img width="800" src="@Url.Action("GetImage", "Photo", new { Id = Model.PhotoID })" >
+            }
         </dd>
 
         <dt>

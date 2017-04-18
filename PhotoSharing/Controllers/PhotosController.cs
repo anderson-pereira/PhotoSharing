@@ -22,7 +22,7 @@ namespace PhotoSharing.Controllers
         }
 
         // GET: Photos/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Display(int? id)
         {
             if (id == null)
             {
@@ -47,46 +47,28 @@ namespace PhotoSharing.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "PhotoID,Title,PhotoFile,ImageMimeType,Description,CreatedDate,UserName")] Photo photo)
+        public ActionResult Create(Photo photo, HttpPostedFileBase image)
         {
+            //Upload da imagem
+            photo.CreatedDate = DateTime.Today;
             if (ModelState.IsValid)
             {
+                if (image != null)
+                {
+                    photo.ImageMimeType = image.ContentType;
+
+                    photo.PhotoFile = new byte[image.ContentLength];
+
+                    //Ler do 0 até o final da imagem.
+                    image.InputStream.Read(photo.PhotoFile, 0, image.ContentLength);
+                }
+
                 db.Photos.Add(photo);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
-            return View(photo);
-        }
-
-        // GET: Photos/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Photo photo = db.Photos.Find(id);
-            if (photo == null)
-            {
-                return HttpNotFound();
-            }
-            return View(photo);
-        }
-
-        // POST: Photos/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "PhotoID,Title,PhotoFile,ImageMimeType,Description,CreatedDate,UserName")] Photo photo)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(photo).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
             return View(photo);
         }
 
@@ -114,6 +96,19 @@ namespace PhotoSharing.Controllers
             db.Photos.Remove(photo);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public FileContentResult GetImage(int id)
+        {
+            Photo photo = db.Photos.Find(id);
+
+            if(photo != null)
+            {
+                return File(photo.PhotoFile, photo.ImageMimeType);
+            }else
+            {
+                return null;
+            }
         }
 
         protected override void Dispose(bool disposing)
