@@ -21,6 +21,24 @@ namespace PhotoSharing.Controllers
             return View(db.Photos.ToList());
         }
 
+        public ActionResult _PhotoGallery(int number)
+        {
+            List<Photo> photos;
+
+            if (number == 0)
+            {
+                photos = db.Photos.ToList();
+            }
+            else
+            {
+                photos = (from p in db.Photos
+                          orderby p.CreatedDate descending
+                          select p).Take(number).ToList();
+            }
+
+            return PartialView();
+        }
+
         // GET: Photos/Details/5
         public ActionResult Display(int? id)
         {
