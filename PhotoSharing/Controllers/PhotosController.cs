@@ -21,6 +21,8 @@ namespace PhotoSharing.Controllers
             return View(db.Photos.ToList());
         }
 
+        //Não pode ser chamada diretamente.
+        [ChildActionOnly]
         public ActionResult _PhotoGallery(int number)
         {
             List<Photo> photos;
