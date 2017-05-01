@@ -8,6 +8,12 @@ namespace PhotoSharing.Models
 {
     public class PhotoSharingContext : DbContext
     {
+
+        public PhotoSharingContext() : base()
+        {
+            Database.CommandTimeout = 180;
+        }
+
         public DbSet<Photo> Photos { get; set; }
 
         public DbSet<Comment> Comments { get; set; }

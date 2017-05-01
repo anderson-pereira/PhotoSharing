@@ -23,7 +23,7 @@ namespace PhotoSharing.Controllers
 
         //Não pode ser chamada diretamente.
         [ChildActionOnly]
-        public ActionResult _PhotoGallery(int number)
+        public ActionResult _PhotoGallery(int number = 0)
         {
             List<Photo> photos;
 
@@ -38,7 +38,7 @@ namespace PhotoSharing.Controllers
                           select p).Take(number).ToList();
             }
 
-            return PartialView();
+            return PartialView(photos);
         }
 
         // GET: Photos/Details/5

@@ -21,6 +21,6 @@ namespace PhotoSharing.Models
         [DataType(DataType.MultilineText)]
         public string Body { get; set; }
 
-        public Photo Photo { get; set; }
+        public virtual Photo Photo { get; set; }
     }
 }

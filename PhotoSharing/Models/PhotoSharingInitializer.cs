@@ -7,7 +7,7 @@ using System.Web;
 
 namespace PhotoSharing.Models
 {
-    public class PhotoSharingInitializer : DropCreateDatabaseAlways<PhotoSharingContext>
+    public class PhotoSharingInitializer : DropCreateDatabaseIfModelChanges<PhotoSharingContext>
     {
         protected override void Seed(PhotoSharingContext context)
         {
@@ -15,39 +15,39 @@ namespace PhotoSharing.Models
 
             List<Photo> photos = new List<Photo>()
             {
-                    new Photo()
+                    new Photo
                     {
                         Title = "This a god eletric car project!",
                         Description = "This car is one of the best projects of eletric cars.",
                         UserName = "Pedro",
-                        PhotoFile = getFileBytes("\\Images\\mercedes.jpg"),
+                        PhotoFile = getFileBytes(@"\Images\mercedes.jpg"),
                         ImageMimeType = "image/jpeg",
-                        CreatedDate = DateTime.Today
+                        CreatedDate = DateTime.Today.AddDays(-3)
                     },
-                     new Photo()
+                     new Photo
                     {
                         Title = "This a god gold car!",
                         Description = "This car very expensive.",
                         UserName = "Pedro",
-                        PhotoFile = getFileBytes("\\Images\\gold_audi.jpg"),
+                        PhotoFile = getFileBytes(@"\Images\gold_audi.jpg"),
                         ImageMimeType = "image/jpeg",
-                        CreatedDate = DateTime.Today
+                        CreatedDate = DateTime.Today.AddDays(-2)
                     },
-                      new Photo()
+                      new Photo
                     {
                         Title = "This a wonderful car!",
                         Description = "This is very god.",
                         UserName = "Pedro",
-                        PhotoFile = getFileBytes("\\Images\\lamborguini.jpg"),
+                        PhotoFile = getFileBytes(@"\Images\lamborguini.jpg"),
                         ImageMimeType = "image/jpeg",
-                        CreatedDate = DateTime.Today
-                    } 
+                        CreatedDate = DateTime.Today.AddDays(-1)
+                    },
             };
 
-            photos.ForEach(s => context.Photos.Add(s));
+            photos.ForEach(p => context.Photos.Add(p));
             context.SaveChanges();
 
-            var comments = new List<Comment>
+            List<Comment> comments = new List<Comment>()
             {
                 new Comment
                 {
@@ -69,14 +69,14 @@ namespace PhotoSharing.Models
                     UserName = "Carlos",
                     Subject = "Lamborguini!",
                     Body = "I love this car!"
-                }
+                },
             };
 
             comments.ForEach(c => context.Comments.Add(c));
             context.SaveChanges();
         }
 
-        private Byte[] getFileBytes(string path)
+        private byte[] getFileBytes(string path)
         {
             FileStream fileOnDisk = new FileStream(HttpRuntime.AppDomainAppPath + path, FileMode.Open);
             byte[] fileBytes;
