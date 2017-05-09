@@ -50,8 +50,16 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Doubles\FakePhotoSharingContext.cs" />
     <Compile Include="PhotoControllerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\PhotoSharing\PhotoSharing.csproj">
+      <Project>{0d79552d-27cb-409a-a25b-69b4f3920fb2}</Project>
+      <Name>PhotoSharing</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
