@@ -13,12 +13,22 @@ namespace PhotoSharing.Controllers
     [ValueReporter]
     public class PhotosController : Controller
     {
-        private PhotoSharingContext db = new PhotoSharingContext();
+        private IPhotoSharingContext context;
 
+        public PhotosController()
+        {
+            context = new PhotoSharingContext();
+        }
+
+        public PhotosController(IPhotoSharingContext context)
+        {
+            this.context = context;
+        }
+        
         // GET: Photos
         public ActionResult Index()
         {
-            return View(db.Photos.ToList());
+            return View(context.Photos.ToList());
         }
 
         //Não pode ser chamada diretamente.
@@ -29,11 +39,11 @@ namespace PhotoSharing.Controllers
 
             if (number == 0)
             {
-                photos = db.Photos.ToList();
+                photos = context.Photos.ToList();
             }
             else
             {
-                photos = (from p in db.Photos
+                photos = (from p in context.Photos
                           orderby p.CreatedDate descending
                           select p).Take(number).ToList();
             }
@@ -48,7 +58,7 @@ namespace PhotoSharing.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Photo photo = db.Photos.Find(id);
+            Photo photo = context.FindPhotoById(id.Value); //Id nullable
             if (photo == null)
             {
                 return HttpNotFound();
@@ -83,8 +93,8 @@ namespace PhotoSharing.Controllers
                     image.InputStream.Read(photo.PhotoFile, 0, image.ContentLength);
                 }
 
-                db.Photos.Add(photo);
-                db.SaveChanges();
+                context.Add<Photo>(photo); //Método Genérico
+                context.SaveChanges();
 
                 return RedirectToAction("Index");
             }
@@ -99,7 +109,7 @@ namespace PhotoSharing.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Photo photo = db.Photos.Find(id);
+            Photo photo = context.FindPhotoById(id.Value);
             if (photo == null)
             {
                 return HttpNotFound();
@@ -112,15 +122,15 @@ namespace PhotoSharing.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Photo photo = db.Photos.Find(id);
-            db.Photos.Remove(photo);
-            db.SaveChanges();
+            Photo photo = context.FindPhotoById(id);
+            context.Delete(photo); //Método Genérico 2 forma de ser chamado.
+            context.SaveChanges();
             return RedirectToAction("Index");
         }
 
         public FileContentResult GetImage(int id)
         {
-            Photo photo = db.Photos.Find(id);
+            Photo photo = context.FindPhotoById(id);
 
             if(photo != null)
             {
@@ -135,7 +145,7 @@ namespace PhotoSharing.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                context.Dispose();
             }
             base.Dispose(disposing);
         }

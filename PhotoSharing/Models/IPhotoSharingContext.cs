@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PhotoSharing.Models
 {
-    interface IPhotoSharingContext
+    public interface IPhotoSharingContext
     {
         //Propriedade é um tipo de método, já que os comportamentos são refletidos por métodos.
         IQueryable<Photo> Photos { get; }
@@ -16,5 +16,6 @@ namespace PhotoSharing.Models
         Photo FindPhotoById(int ID);
         Comment FindCommentById(int ID);
         T Delete<T>(T entity) where T : class;
+        void Dispose();
     }
 }
