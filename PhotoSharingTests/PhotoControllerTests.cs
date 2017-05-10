@@ -90,5 +90,28 @@ namespace PhotoSharingTests
 
             Assert.AreEqual(4, modelPhotos.Count());
         }
+
+        //Verifica se ao chamar o PhotoGallery com paramêtros ele retorna todas as fotos.
+        [TestMethod]
+        public void TestPhotoGalleryInParameter()
+        {
+            var context = new FakePhotoSharingContext();
+
+            context.Photos = new[]
+            {
+                new Photo(),
+                new Photo(),
+                new Photo(),
+                new Photo(),
+            }.AsQueryable();
+
+            var controller = new PhotosController(context);
+
+            var result = controller._PhotoGallery(3) as PartialViewResult;
+
+            var modelPhotos = (IEnumerable<Photo>)result.Model;
+
+            Assert.AreEqual(3, modelPhotos.Count());
+        }
     }
 }
