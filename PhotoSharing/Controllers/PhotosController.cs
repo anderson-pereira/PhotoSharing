@@ -28,7 +28,10 @@ namespace PhotoSharing.Controllers
         // GET: Photos
         public ActionResult Index()
         {
-            return View(context.Photos.ToList());
+            //Não é mais necessário o parâmetro pois agora é chamado diretamente o PhotoGallery.
+            //return View(context.Photos.ToList());
+            //Nomear a view para ser recupearo no teste.
+            return View("Index");
         }
 
         //Não pode ser chamada diretamente.
