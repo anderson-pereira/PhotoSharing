@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PhotoSharingTests.Doubles;
 using PhotoSharing.Controllers;
 using System.Web.Mvc;
+using PhotoSharing.Models;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace PhotoSharingTests
 {
@@ -21,6 +24,48 @@ namespace PhotoSharingTests
 
             //Testa se o nome da view é realmente Index.
             Assert.AreEqual("Index", result.ViewName);
+        }
+
+        //Verifica se a partialView retorna uma lista de fotos.
+        [TestMethod]
+        public void TestPhotoGalleryModelType()
+        {
+            var context = new FakePhotoSharingContext();
+
+            context.Photos = new[]
+            {
+                new Photo(),
+                new Photo(),
+                new Photo(),
+                new Photo(),
+            }.AsQueryable();
+
+            var controller = new PhotosController(context);
+
+            var result = controller._PhotoGallery() as PartialViewResult;
+
+            Assert.AreEqual(typeof(List<Photo>), result.Model.GetType());
+        }
+
+        //Verifica o tipo de retorno do getImage.
+        [TestMethod]
+        public void TestGetImageReturnType()
+        {
+            var context = new FakePhotoSharingContext();
+
+            context.Photos = new[]
+            {
+                new Photo() { PhotoID = 1, PhotoFile = new byte[1], ImageMimeType = "image/jpeg" },
+                new Photo() { PhotoID = 2, PhotoFile = new byte[1], ImageMimeType = "image/jpeg" },
+                new Photo() { PhotoID = 3, PhotoFile = new byte[1], ImageMimeType = "image/jpeg" },
+                new Photo() { PhotoID = 4, PhotoFile = new byte[1], ImageMimeType = "image/jpeg" },
+            }.AsQueryable();
+
+            var controller = new PhotosController(context);
+
+            var result = controller.GetImage(1) as ActionResult;
+
+            Assert.AreEqual(typeof(FileContentResult), result.GetType());
         }
     }
 }
