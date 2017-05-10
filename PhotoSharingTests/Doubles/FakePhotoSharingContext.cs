@@ -87,7 +87,7 @@ namespace PhotoSharingTests.Doubles
 
                 if (Contains(typeof(T)))
                 {
-                    Remove(typeof(T)));
+                    Remove(typeof(T));
                 }
 
                 Add(set);
