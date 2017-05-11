@@ -17,6 +17,7 @@ namespace PhotoSharing
             Database.SetInitializer<PhotoSharingContext>(new PhotoSharingInitializer());
             // Code that runs on application startup
             AreaRegistration.RegisterAllAreas();
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }
     }

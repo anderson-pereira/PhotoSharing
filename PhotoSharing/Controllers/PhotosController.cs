@@ -10,6 +10,7 @@ using PhotoSharing.Models;
 
 namespace PhotoSharing.Controllers
 {
+    [HandleError(View = "Error")]
     [ValueReporter]
     public class PhotosController : Controller
     {
@@ -57,11 +58,13 @@ namespace PhotoSharing.Controllers
         // GET: Photos/Details/5
         public ActionResult Display(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+
             Photo photo = context.FindPhotoById(id.Value); //Id nullable
+
             if (photo == null)
             {
                 return HttpNotFound();
@@ -142,6 +145,11 @@ namespace PhotoSharing.Controllers
             {
                 return null;
             }
+        }
+
+        public ActionResult SlideShow()
+        {
+            throw new NotImplementedException("The SlidShow action is not yet ready.");
         }
 
         protected override void Dispose(bool disposing)
